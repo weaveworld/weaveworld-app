@@ -1,0 +1,23 @@
+{
+  "name": "weaveworld",
+  "version": "0.12.190416",
+  "description": "Weaveworld, full-scale JavaScript framework for web applications",
+  "main": "weaveworld.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weaveworld/weaveworld-app.git"
+  },
+  "keywords": [
+    "WebDevelopment"
+  ],
+  "author": {
+    "name": "Cs. Veg",
+    "email": "cs.veg@weaveworld.org"
+  },
+  "license": "For create-weaveworld-app: MIT. For Weaveworld: SEE LICENSE IN 'public/LICENSE' file",
+  "homepage": "https://github.com/weaveworld/Weaveworld#readme",
+  "dependencies": {}
+}
