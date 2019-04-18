@@ -20,13 +20,21 @@ app.listen(3000);
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// optional: publishing files from a folder, too
+// Optional: publishing files from a folder, too
 weaveworld.dir=__dirname+'/public';
 
+// Optional: handling REST API requests
 app.route('/tasks')
     .get(function(req,res){
         res.send([{name:'Task1'},{name:'Task2'}]);
     });
+// ...    
+
+// Optional: handling ONCE-style server calls
+weaveworld.op('hello').then(o=>({message:'Hello '+(o.name||'World')+'!'}));
+// ...
+
+// Mandatory: set routing
 app.all('/*',weaveworld.route);
 ``` 
 
