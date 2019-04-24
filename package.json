@@ -1,6 +1,6 @@
 {
   "name": "weaveworld",
-  "version": "0.14.190421",
+  "version": "0.14.190424",
   "description": "Weaveworld, full-scale JavaScript framework for web applications",
   "main": "weaveworld.js",
   "scripts": {
