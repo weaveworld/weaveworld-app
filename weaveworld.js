@@ -1,4 +1,6 @@
 const fs = require('fs');
+const vm = require('vm');
+
 
 function getCmd(arg) {
   if (typeof (arg) == 'object' && arg) {
@@ -8,6 +10,23 @@ function getCmd(arg) {
 }
 
 var service = {};
+
+function Arg(arg){
+  this.arg=arg;
+  this.eval=function(cx){ var r={}, rr=null, a=arg.split(','), more=false;
+    for(var i=0; i<a.length; ++i){ var s=a[i].trim(), idx; if(i>0) more=true;
+      if(!s){ continue;
+      }else if((idx=s.indexOf(':'))!=-1){ var e=s.substring(idx+1); s=s.substring(0,idx);
+        if(e.match(/^[a-zA-Z_$][a-zA-Z_$0-9]*/)){ rr=cx[e];
+        }else{ rr=vm.runInNewContext(e,cx);
+        }
+      }else{ rr=cx[s];
+      }
+      if(typeof(rr)!='undefined') r[s]=rr;
+    }              
+    return more?r:rr;
+  }
+}
 
 function Steps() {
   this.ok = true;
@@ -29,14 +48,24 @@ function Steps() {
     var f = arguments.length > i;
     var fn = (v) => new Promise((resolve, reject) => {
       var $arg = f ? arguments[i] : v, log=module.exports.sqlLog;
+      if(typeof($arg)=='function'){ //$arg.call()
+      }else if($arg && !Array.isArray($arg)){ $arg=[$arg]; 
+      }
+      if(Array.isArray($arg)){
+        for(var ai=0; ai<$arg.length; ++ai){
+          if($arg[ai] instanceof Arg){
+            $arg[ai]=$arg[ai].eval(this);
+          }
+        }
+      }
       if(log) log('SQL:', $cmd, $arg);
       $conn.query($cmd, $arg, function (err, res) {
         if (!err){
-          if(log) log('RESULT:', cmd, $arg);
+          if(log) log('RESULT:', $cmd, $arg);
           resolve(res);
         }else{
-          if(log) log('ERROR:', cmd, $arg);
-           reject(err);
+          if(log) log('ERROR:', $cmd, $arg);
+          reject(err);
         }
       })
     })
@@ -83,6 +112,8 @@ module.exports.op = function (name) {
   var steps = service[name] = new Steps();
   return steps;
 };
+module.exports.arg= function(arg){ return new Arg(arg); }
+
 module.exports.route = function (req, res, next) {
   var cmd = getCmd(req.body) || getCmd(req.query);
   if (req.get('Pragma') == 'W$CALL' || !module.exports.PROD && cmd) {
