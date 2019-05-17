@@ -112,6 +112,10 @@ module.exports.op = function (name) {
   var steps = service[name] = new Steps();
   return steps;
 };
+module.exports.call = function (resolve, reject, cmd, arg) {
+  if (!(fn = service[cmd]) instanceof Steps) throw new Error('Undefined service operation: '+cmd);
+  fn.start(resolve,reject,arg);
+ }; 
 module.exports.arg= function(arg){ return new Arg(arg); }
 
 module.exports.route = function (req, res, next) {
