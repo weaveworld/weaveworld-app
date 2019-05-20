@@ -11,13 +11,13 @@
     "url": "git+https://github.com/weaveworld/weaveworld-app.git"
   },
   "keywords": [
-    "WebDevelopment"
+    "WebDevelopment", "Weaveworld"
   ],
   "author": {
     "name": "Cs. Veg",
     "email": "cs.veg@weaveworld.org"
   },
-  "license": "For create-weaveworld-app: MIT. For Weaveworld: SEE LICENSE IN 'public/LICENSE' file",
+  "license": "For weaveworld-app: MIT. For Weaveworld: SEE LICENSE IN 'public/LICENSE' file",
   "homepage": "https://github.com/weaveworld/Weaveworld#readme",
   "dependencies": {}
 }
